@@ -1,0 +1,17 @@
+<div class="wrapper mt-2 ">
+    <mat-form-field appearance="outline" class="w-100 custom-outline" disabled ="disabled">
+      <mat-label>Sede</mat-label>
+      <mat-select [(ngModel)]="selected">
+        <mat-option *ngFor="let sede of lstSede" [value]="sede.codigo">
+          {{ sede.descripcion }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+    <div class="d-flex justify-content-end mt-3">
+      <button (click)="onClickBtn()" [routerLink]="['/horario']" class="btn btn-secondary" [disabled]="!selected">
+        Buscar
+      </button>
+    </div>
+  </div>
+  

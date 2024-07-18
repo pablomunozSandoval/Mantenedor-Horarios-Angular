@@ -1,0 +1,87 @@
+<!-- Sección de Búsqueda de Sede -->
+<div class="p-2">
+    <div class="border-bottom pb-2">
+      <div class="d-flex justify-content-end">
+        <!-- Botón para buscar sede -->
+        <button [routerLink]="['']" class="btn btn-secondary">
+          Buscar Sede
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Componente de Tabs -->
+  <div class="tab">
+    <mat-tab-group animationDuration="0ms" (selectedTabChange)="onTabChange($event)">
+      <div class="m-2">
+        <!-- Tab de Año y Sede -->
+        <mat-tab label="{{ periodoSelect.descripcion }} - Sede {{ sedeSelect.descripcion }}">
+          <ng-template matTabContent>
+            <!-- Contenido dinámico para esta tab -->
+          </ng-template>
+        </mat-tab>
+  
+        <!-- Tab de Otros Periodos -->
+        <mat-tab label="Otros Periodos">
+          <ng-template matTabContent>
+            <!-- Contenido dinámico para esta tab -->
+          </ng-template>
+        </mat-tab>
+      </div>
+    </mat-tab-group>
+  </div>
+  
+  <!-- Tabla con los datos filtrados -->
+  <mat-form-field class="custom-width" style="padding: 10px;">
+    <mat-label>Filtrar</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ejemplo: Mañana" #input />
+  </mat-form-field>
+  
+  <div class="mat-elevation-z8 p-5">
+    <table mat-table [dataSource]="dataSource" matSort class="table">
+      <!-- Columna HORA_CCOD -->
+      <ng-container matColumnDef="HORA_CCOD">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Hora Código</th>
+        <td mat-cell *matCellDef="let row">{{ row.HORA_CCOD }}</td>
+      </ng-container>
+  
+      <!-- Columna HORA_HINICIO -->
+      <ng-container matColumnDef="HORA_HINICIO">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Hora Inicio</th>
+        <td mat-cell *matCellDef="let row">{{ row.HORA_HINICIO }}</td>
+      </ng-container>
+  
+      <!-- Columna HORA_HTERMINO -->
+      <ng-container matColumnDef="HORA_HTERMINO">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Hora Término</th>
+        <td mat-cell *matCellDef="let row">{{ row.HORA_HTERMINO }}</td>
+      </ng-container>
+  
+      <!-- Columna TURN_TDESC -->
+      <ng-container matColumnDef="TURN_TDESC">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Turno</th>
+        <td mat-cell *matCellDef="let row">{{ row.TURN_TDESC }}</td>
+      </ng-container>
+  
+      <!-- Columna AUDI_TUSUARIO -->
+      <ng-container matColumnDef="AUDI_TUSUARIO">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Última Modificación</th>
+        <td mat-cell *matCellDef="let row">{{ row.AUDI_TUSUARIO }}</td>
+      </ng-container>
+  
+      <!-- Columna Acción -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Acción</th>
+        <td mat-cell *matCellDef="let row; let i = $index">
+          <a class="mat-raised-button" color="primary" (click)="btnEditar(row.HORA_CCOD)">Editar</a>
+          <a> / </a>
+          <a class="mat-raised-button" color="primary" (click)="btnEliminar(row)">Eliminar</a>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator [pageSize]="5" [length]="dataSource.data.length" [pageSizeOptions]="[20, 50, 100]" aria-label="Seleccionar Página"></mat-paginator>
+  </div>
+  

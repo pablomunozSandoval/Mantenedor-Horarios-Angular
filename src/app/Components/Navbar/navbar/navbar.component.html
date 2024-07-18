@@ -1,0 +1,44 @@
+<mat-toolbar class="custom-toolbar">
+  <a class="navbar-brand" href="https://www.inacap.cl">
+    <div class="d-flex">
+      <picture>
+        <source class="logo-mobile" media="(max-width: 576px)" srcset="https://digital.inacap.cl/template-aplicaciones/img/isotipo.png">
+        <img class="logo-inacap" src="https://www.inacap.cl/web/template-aplicaciones/img/logo-inacap.png" alt="INACAP">
+      </picture>
+    </div>
+  </a>
+
+  <div class="mantenedor">
+    <div class="p-2">
+      <div>{{ title }}</div>
+    </div>
+  </div>
+
+  <span class="example-spacer"></span>
+
+  <div class="d-flex user-section">
+    <div class="user-info">
+      <div class="colab">Colaborador de Prueba</div>
+    </div>
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
+
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="openNotifications()">
+    <mat-icon>notifications</mat-icon>
+    <span>Notificaciones</span>
+  </button>
+  <button mat-menu-item (click)="openAccessibility()">
+    <mat-icon>accessibility</mat-icon>
+    <span>Accesibilidad</span>
+  </button>
+  <button mat-menu-item (click)="logout()">
+    <mat-icon>exit_to_app</mat-icon>
+    <span>Salir</span>
+  </button>
+</mat-menu>
+
+

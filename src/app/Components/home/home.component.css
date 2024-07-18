@@ -1,0 +1,80 @@
+/* Estilo personalizado para dejar solo el borde inferior */
+.custom-outline .mat-form-field-wrapper {
+    padding-bottom: 0;
+    padding-top: 0;
+  }
+  
+  .custom-outline .mat-form-field-flex {
+    border: none;
+    border-bottom: 2px solid currentColor;
+  }
+  
+  .custom-outline .mat-form-field-appearance-outline .mat-form-field-outline {
+    display: none;
+  }
+
+  .btn {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    transition: all 0.2s ease-in-out;
+    margin: 0 0.375rem;
+    border: 0;
+    cursor: pointer;
+    white-space: normal;
+    word-wrap: break-word;
+    color: #fff;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    padding: 0.375rem 0.75rem;
+    padding-top: 0.375rem;
+    padding-right: 0.75rem;
+    padding-bottom: 0.375rem;
+    padding-left: 0.75rem;
+    line-height: 1.5;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    background-color: #666;
+    border-radius: 10em;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.select-wrapper input.select-dropdown {
+    position: relative;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #ced4da;
+    outline: none;
+    height: 1.9rem;
+    line-height: 1.9rem;
+    width: 100%;
+    font-size: 1em;
+    margin: 0;
+    padding: 0;
+    display: block;
+    padding-right: 25px;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+    color: #495057;
+}
+
+h1,h2,h3, h4  {
+    font-family: "Fjalla";
+
+}
+
+body, span, label h5, h6 {
+    font-family: "Roboto Condensed", sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'liga';
+}
+
+.toast {
+  z-index: 1050; /* Asegúrate de que sea mayor o menor según tus necesidades */
+}
