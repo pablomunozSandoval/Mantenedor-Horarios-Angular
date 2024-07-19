@@ -1,0 +1,45 @@
+<h1 mat-dialog-title>Actualizar Horario</h1>
+<div mat-dialog-content>
+  <form [formGroup]="horarioForm">
+    <mat-form-field>
+      <mat-label>Hora CCOD</mat-label>
+      <input matInput formControlName="i_hora_ccod">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Sede CCOD</mat-label>
+      <input matInput formControlName="i_sede_ccod">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Período CCOD</mat-label>
+      <input matInput formControlName="i_peri_ccod">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Hora de Inicio</mat-label>
+      <input matInput [matDatepicker]="hinicioPicker" formControlName="i_hinicio">
+      <mat-datepicker-toggle matSuffix [for]="hinicioPicker"></mat-datepicker-toggle>
+      <mat-datepicker #hinicioPicker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Hora de Término</mat-label>
+      <input matInput [matDatepicker]="hterminoPicker" formControlName="i_htermino">
+      <mat-datepicker-toggle matSuffix [for]="hterminoPicker"></mat-datepicker-toggle>
+      <mat-datepicker #hterminoPicker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Turno CCOD</mat-label>
+      <input matInput formControlName="i_turn_ccod">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Usuario</mat-label>
+      <input matInput formControlName="i_audi_tusuario">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Origen</mat-label>
+      <input matInput formControlName="i_origen">
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button (click)="onSubmit()">Actualizar</button>
+</div>

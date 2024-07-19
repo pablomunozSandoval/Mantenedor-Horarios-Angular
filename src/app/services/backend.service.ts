@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { ICbo } from '../models/cbo.model';
 import { IHorarioSedePeriodo } from '../models/horarioSedePeriodo.model';
+import { HorarioUpdateResult } from '../models/horarioUpdateResult.model';
 
 @Injectable({
   providedIn: 'root'
@@ -77,5 +78,18 @@ export class BackendService {
     return throwError('Something bad happened; please try again later.');
   }
 
-  // Puedes agregar más métodos aquí para diferentes endpoints
+
+  updateHorario(i_hora_ccod: number, i_sede_ccod: number, i_peri_ccod: number, i_hinicio: Date, i_htermino: Date, i_turn_ccod: number, i_audi_tusuario: string, i_origen: number): Observable<HorarioUpdateResult[]> {
+    const params = new HttpParams()
+      .set('i_hora_ccod', i_hora_ccod.toString())
+      .set('i_sede_ccod', i_sede_ccod.toString())
+      .set('i_peri_ccod', i_peri_ccod.toString())
+      .set('i_hinicio', i_hinicio.toISOString())
+      .set('i_htermino', i_htermino.toISOString())
+      .set('i_turn_ccod', i_turn_ccod.toString())
+      .set('i_audi_tusuario', i_audi_tusuario)
+      .set('i_origen', i_origen.toString());
+
+    return this.http.get<HorarioUpdateResult[]>(`${this.apiUrl}Horario/UpdateHorario`, { params });
+  }
 }
