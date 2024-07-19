@@ -49,38 +49,38 @@
     <!-- Columna HORA_CCOD -->
     <ng-container matColumnDef="Hora_Ccod">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription = "Ordenar por Código">Hora Código</th>
-      <td mat-cell *matCellDef="let row">{{ row.HORA_CCOD }}</td>
+      <td mat-cell *matCellDef="let row">{{ row.hora_ccod }}</td>
     </ng-container>
 
     <!-- Columna HORA_HINICIO -->
     <ng-container matColumnDef="Hora_Hinicio">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription = "Ordenar por Hora Inicio">Hora Inicio</th>
-      <td mat-cell *matCellDef="let row">{{ row.HORA_HINICIO }}</td>
+      <td mat-cell *matCellDef="let row">{{ row.hora_hinicio }}</td>
     </ng-container>
 
     <!-- Columna HORA_HTERMINO -->
     <ng-container matColumnDef="Hora_Htermino">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription = "Ordenar por Hora Término">Hora Término</th>
-      <td mat-cell *matCellDef="let row">{{ row.HORA_HTERMINO }}</td>
+      <td mat-cell *matCellDef="let row">{{ row.hora_htermino }}</td>
     </ng-container>
 
     <!-- Columna TURN_TDESC -->
     <ng-container matColumnDef="Turn_Tdesc" >
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription = "Ordenar por Turno">Turno</th>
-      <td mat-cell *matCellDef="let row">{{ row.TURN_TDESC }}</td>
+      <td mat-cell *matCellDef="let row">{{ row.turn_tdesc }}</td>
     </ng-container>
 
     <!-- Columna AUDI_TUSUARIO -->
     <ng-container matColumnDef="Audi_Tusuario">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription = "Ordenar por Usuario">Última Modificación</th>
-      <td mat-cell *matCellDef="let row">{{ row.AUDI_TUSUARIO }}</td>
+      <td mat-cell *matCellDef="let row">{{ row.audi_tusuario }}</td>
     </ng-container>
 
     <!-- Columna Acción -->
     <ng-container matColumnDef="action">
       <th mat-header-cell *matHeaderCellDef >Acción</th>
       <td mat-cell *matCellDef="let row; let i = $index">
-        <a class="mat-raised-button" color="primary" (click)="btnEditar(row.HORA_CCOD)">Editar</a>
+        <a class="mat-raised-button" color="primary" (click)="btnEditar(row.hora_ccod)">Editar</a>
         <a> / </a>
         <a class="mat-raised-button" color="primary" (click)="btnEliminar(row)">Eliminar</a>
       </td>

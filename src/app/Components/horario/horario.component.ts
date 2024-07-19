@@ -105,9 +105,10 @@ export class HorarioComponent implements OnInit, AfterViewInit {
     console.log('estas aqui en load horarios')
     this.backendService.getHorariosSedePeriodo(codigoSede, codigoPeriodo, 0, 100, '0', 'asc', '')
       .subscribe(
-        (data: any[]) => {
+        (data: IHorarioSedePeriodo[]) => {
           console.log(data)
           this.dataSource.data = data;
+          console.log(this.dataSource)
         },
         (error: any) => {
           this._toastrNotify.error(error.error, 'Error');
@@ -149,7 +150,7 @@ export class HorarioComponent implements OnInit, AfterViewInit {
   }
 
   btnEditar(id: number): void {
-    const row: any = this.dataSource.data.find((x) => x.Hora_Ccod === id);
+    const row: any = this.dataSource.data.find((x) => x.hora_ccod === id);
     this.openDialog(row);
   }
 

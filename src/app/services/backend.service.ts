@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { ICbo } from '../models/cbo.model';
 import { IHorarioSedePeriodo } from '../models/horarioSedePeriodo.model';
 import { HorarioUpdateResult } from '../models/horarioUpdateResult.model';
@@ -38,7 +38,7 @@ export class BackendService {
     i_sort: string, 
     i_dir: string, 
     i_filtro: string
-  ): Observable<IHorarioSedePeriodo[]> {
+  ): Observable<any[]> {
     const url = this.getUrl(this._getHorariosSedePeriodo);
     
     console.log('URL:', url);
@@ -54,8 +54,17 @@ export class BackendService {
 
     console.log('Params:', params.toString());
 
-    return this.http.get<IHorarioSedePeriodo[]>(url, { params })
-      .pipe(catchError(this.handleError));
+    return this.http.get<any[]>(url, { params }).pipe(
+      map(data => data.map(item => ({
+        hora_ccod: item.hora_ccod,
+        hora_hinicio: item.HORA_HINICIO,
+        hora_htermino: item.HORA_HTERMINO,
+        turn_tdesc: item.turn_tdesc,
+        tipo_horario: item.tipo_horario,
+        audi_tusuario: item.audi_tusuario
+      }))),
+      catchError(this.handleError)
+    );
   }
 
   getCboPeriodoActual():Observable<any> {
