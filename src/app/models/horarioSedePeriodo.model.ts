@@ -1,9 +1,9 @@
 export interface IHorarioSedePeriodo {
-    SEDE_TDESC: string;
-    HORA_CCOD: number;
-    HORA_HINICIO: string;
-    HORA_HTERMINO: string;
-    TURN_TDESC: string;
-    TURN_CCOD: number;
-    AUDI_TUSUARIO: string;
+    Sede_Tdesc: string;
+    Hora_Ccod: number;
+    Hora_Hinicio: string;
+    Hora_Htermino: string;
+    Turn_TDESC: string;
+    Turn_Ccod: number;
+    Audi_Tusuario: string;
   }

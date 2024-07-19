@@ -9,7 +9,8 @@ import { MatInputModule } from '@angular/material/input';  // Asegúrate de tene
 import { RouterModule } from '@angular/router'; // Importa RouterModule
 import { BackendService } from '../../services/backend.service';
 import { ICbo } from '../../models/cbo.model';
-import { Toast, ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
+import { IHorarioSedePeriodo } from '../../models/horarioSedePeriodo.model';
 
 @Component({
   selector: 'app-horario',
@@ -28,67 +29,89 @@ import { Toast, ToastrService } from 'ngx-toastr';
   styleUrls: ['./horario.component.css']
 })
 export class HorarioComponent implements OnInit, AfterViewInit {
-  periodoSelect: ICbo = { codigo: 0, descripcion: '' }
-  periodoActual : string = '';
-  sedeSelect: ICbo = { codigo: 0, descripcion: '' }
+  periodoSelect: ICbo = { codigo: 0, descripcion: '' };
+  periodoDescripcion: string = '';
+  periodoCodigo: number = 0;
+  sedeSelect: ICbo = { codigo: 0, descripcion: '' };
   navTabEvent: number = 0;
   selected = '';
   lstPeriodos: ICbo[] = [];
-  dataSource = new MatTableDataSource<any>();
+  selectedPeriodo: number | null = null; // Nuevo: almacena el período seleccionado
+  dataSource = new MatTableDataSource<IHorarioSedePeriodo>();
 
   displayedColumns: string[] = [
-    'HORA_CCOD',
-    'HORA_HINICIO',
-    'HORA_HTERMINO',
-    'TURN_TDESC',
-    'AUDI_TUSUARIO',
+    'Hora_Ccod',
+    'Hora_Hinicio',
+    'Hora_Htermino',
+    'Turn_Tdesc',
+    'Audi_Tusuario',
     'action'
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private backendService: BackendService,    private _toastrNotify: ToastrService,) { }
+  constructor(private backendService: BackendService, private _toastrNotify: ToastrService) { }
 
   ngOnInit(): void {
     if (typeof window !== 'undefined' && window.localStorage) {
       const sedeSelected = localStorage.getItem('sedeSelected');
-      this.periodoActual = localStorage.getItem('periodoActual') || '';
-      console.log(this.periodoActual)
+      this.periodoDescripcion = localStorage.getItem('periodoActual') || '';
+      const periodoCodigo = localStorage.getItem('periodoCodigo');
       this.sedeSelect.codigo = sedeSelected ? Number(sedeSelected) : 0;
-      if (this.sedeSelect.codigo) {
-        this.loadHorarios();
+      this.periodoCodigo = periodoCodigo ? Number(periodoCodigo) : 0;
+
+      if (this.sedeSelect.codigo && this.periodoCodigo) {
+        this.loadHorarios(this.sedeSelect.codigo, this.periodoCodigo);
       }
-      
     }
+    this.loadPeriodos(); // Nuevo: carga los períodos
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
 
-  
-  loadHorarios(): void {
+  loadHorarios(codigoSede: number, codigoPeriodo: number): void {
     this.dataSource.data = [];
-    this.backendService.getHorariosSedePeriodo(this.sedeSelect.codigo, this.periodoSelect.codigo, 0, 100, '0', 'asc', '')
+    console.log('estas aqui en load horarios')
+    this.backendService.getHorariosSedePeriodo(codigoSede, codigoPeriodo, 0, 100, '0', 'asc', '')
       .subscribe(
         (data: any[]) => {
+          console.log(data)
           this.dataSource.data = data;
         },
         (error: any) => {
           this._toastrNotify.error(error.error, 'Error');
         }
-
       );
   }
 
-  buscarSedeClick(): void {
-    this.loadHorarios();
+  loadPeriodos(): void { // Nuevo: carga los períodos
+    this.backendService.getCboOtrosPeriodos().subscribe(
+      (data: ICbo[]) => {
+        this.lstPeriodos = data;
+      },
+      (error: any) => {
+        this._toastrNotify.error(error.error, 'Error al cargar otros periodos');
+      }
+    );
   }
 
-  onTabChange(event: any): void {
+  onPeriodoChange(): void { // Nuevo: carga los horarios cuando cambia el período seleccionado
+    if (this.selectedPeriodo !== null) {
+      this.loadHorarios(this.sedeSelect.codigo, this.selectedPeriodo);
+    }
+  }
+
+  onTabChange(event: any): void { // Implementación del método onTabChange
     this.navTabEvent = event.index;
-    // Lógica para cargar los datos correspondientes a la pestaña seleccionada
-    this.loadHorarios(); // O cambia esta lógica según tu necesidad
+    if (this.navTabEvent === 0) {
+      // Cargar horarios para el período actual
+      this.loadHorarios(this.sedeSelect.codigo, this.periodoCodigo);
+    } else if (this.navTabEvent === 1 && this.selectedPeriodo !== null) {
+      // Cargar horarios para el período seleccionado en "Otros Periodos"
+      this.loadHorarios(this.sedeSelect.codigo, this.selectedPeriodo);
+    }
   }
 
   applyFilter(event: any): void {

@@ -65,7 +65,7 @@ export class BackendService {
   }
 
   getCboOtrosPeriodos(): Observable<ICbo[]> {
-    const url = this.getUrl('Horario/getCboOtrosPeriodos');
+    const url = this.getUrl('Combobox/getCboOtrosPeriodos');
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
     return this.http.get<ICbo[]>(url, { headers })
