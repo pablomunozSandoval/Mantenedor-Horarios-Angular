@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 //nav
 import { MatToolbarModule } from '@angular/material/toolbar';
 import {MatSidenavModule } from '@angular/material/sidenav';
@@ -20,9 +20,17 @@ import { CommonModule } from '@angular/common';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent {
-  title = "Titulo de prueba";
-
+export class NavbarComponent  implements OnInit{
+  
+  ngOnInit(): void {
+    if (typeof window !== 'undefined' && window.localStorage) {      
+      this.colaborador =localStorage.getItem('colaborador') || '';
+    }
+    
+    
+  }
+  title = "Mantenedor Horario";
+  colaborador= "Colaborador de Prueba";
 
   openNotifications() {
     // Lógica para abrir las notificaciones

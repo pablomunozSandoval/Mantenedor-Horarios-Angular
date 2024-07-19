@@ -31,6 +31,7 @@ import { ICbo } from '../../models/cbo.model';
 })
 export class HomeComponent implements OnInit {
   nuevoUsuario: string = '17190472';
+  nuevoNombre: string = 'Laura';
   selected: string = '';
   lstSede: ICbo[] = [];
 
@@ -41,11 +42,18 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this._toastrNotify.warning('Cargando datos...', 'Cargando');
+    
     this.getCboSedes(this.nuevoUsuario);
     this.getCboPeriodoActual();
     this.getCboPeriodos();
+    this.guardarColaborador();
   }
+  guardarColaborador() {
+    if (typeof window !== 'undefined' && window.localStorage) {     
+    localStorage.setItem('colaborador', this.nuevoNombre);
+    }
+  }
+
   getCboPeriodos() {
     
   }

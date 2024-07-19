@@ -58,6 +58,7 @@ export class HorarioComponent implements OnInit, AfterViewInit {
       if (this.sedeSelect.codigo) {
         this.loadHorarios();
       }
+      
     }
   }
 
@@ -65,6 +66,7 @@ export class HorarioComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
+  
   loadHorarios(): void {
     this.dataSource.data = [];
     this.backendService.getHorariosSedePeriodo(this.sedeSelect.codigo, this.periodoSelect.codigo, 0, 100, '0', 'asc', '')

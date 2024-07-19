@@ -23,7 +23,6 @@ export class BackendService {
     const url = this.getUrl(this._getSedes);
     
     const body = { i_pers_nrut: rut };
-    console.log(url, body);
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
     return this.http.post<ICbo[]>(url, body, { headers })
