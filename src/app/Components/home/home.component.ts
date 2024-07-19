@@ -44,23 +44,28 @@ export class HomeComponent implements OnInit {
     this._toastrNotify.warning('Cargando datos...', 'Cargando');
     this.getCboSedes(this.nuevoUsuario);
     this.getCboPeriodoActual();
+    this.getCboPeriodos();
   }
-  getCboPeriodoActual():Promise<void> {
+  getCboPeriodos() {
+    
+  }
+  getCboPeriodoActual(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       this.backendService.getCboPeriodoActual().subscribe(
         (data: any) => {
-          console.log(data);
-          localStorage.setItem('periodoSelected', data[0].periodo);
-          this._toastrNotify.success('Se cargaron los datos periodo Actual', 'Éxito');
-          resolve();
+            const periodoActual = data[0].Periodo;
+            if (typeof window !== 'undefined' && window.localStorage) {
+              localStorage.setItem('periodoActual', periodoActual);
+            }
+            this._toastrNotify.success('Se cargaron los datos del periodo actual', 'Éxito');
+            resolve();
         },
         (error: any) => {
           this._toastrNotify.error(error.error, 'Error');
           reject(error);
         }
       );
-    })
-    
+    });
   }
 
   getCboSedes(rut: string): Promise<void> {

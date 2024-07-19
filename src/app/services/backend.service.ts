@@ -58,7 +58,7 @@ export class BackendService {
       .pipe(catchError(this.handleError));
   }
 
-  getCboPeriodoActual():Observable<ICbo[]> {
+  getCboPeriodoActual():Observable<any> {
     const url = this.getUrl('Combobox/getPeriodoActual');
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.get<ICbo[]>(url, { headers })

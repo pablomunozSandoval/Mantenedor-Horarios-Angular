@@ -15,7 +15,7 @@
     <mat-tab-group animationDuration="0ms" (selectedTabChange)="onTabChange($event)">
       <div class="m-2">
         <!-- Tab de Año y Sede -->
-        <mat-tab label="{{ periodoSelect.descripcion }} - Sede {{ sedeSelect.descripcion }}">
+        <mat-tab label="Periodo Actual - {{ periodoActual }}">
           <ng-template matTabContent>
             <!-- Contenido dinámico para esta tab -->
           </ng-template>

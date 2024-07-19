@@ -29,6 +29,7 @@ import { Toast, ToastrService } from 'ngx-toastr';
 })
 export class HorarioComponent implements OnInit, AfterViewInit {
   periodoSelect: ICbo = { codigo: 0, descripcion: '' }
+  periodoActual : string = '';
   sedeSelect: ICbo = { codigo: 0, descripcion: '' }
   navTabEvent: number = 0;
   selected = '';
@@ -51,6 +52,8 @@ export class HorarioComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     if (typeof window !== 'undefined' && window.localStorage) {
       const sedeSelected = localStorage.getItem('sedeSelected');
+      this.periodoActual = localStorage.getItem('periodoActual') || '';
+      console.log(this.periodoActual)
       this.sedeSelect.codigo = sedeSelected ? Number(sedeSelected) : 0;
       if (this.sedeSelect.codigo) {
         this.loadHorarios();
