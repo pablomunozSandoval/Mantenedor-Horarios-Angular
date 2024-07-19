@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { ICbo } from '../models/cbo.model';
-import { IHorarioSede } from '../models/horarioSede.model';
+import { IHorarioSedePeriodo } from '../models/horarioSedePeriodo.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BackendService {
   private apiUrl = 'http://localhost:51322/';  // Reemplazar esta URL con la URL de tu backend
-  private _getHorariosBySede = 'Horario/getHorariosBySede';
+  private _getHorariosSedePeriodo = 'Horario/getHorarioSedePeriodo';
   constructor(private http: HttpClient) { }
 
 
@@ -30,18 +30,38 @@ export class BackendService {
       .pipe(catchError(this.handleError));
   }
 
-  getHorariosBySede(i_sede_ccod: number, i_inicio: number, i_limite: number, i_sort: string, i_dir: string, i_filtro: string): Observable<IHorarioSede[]> {
-    const url = this.getUrl(this._getHorariosBySede);
+  getHorariosSedePeriodo(
+    i_sede_ccod: number, 
+    i_periodo_ccod: number, 
+    i_inicio: number, 
+    i_limite: number, 
+    i_sort: string, 
+    i_dir: string, 
+    i_filtro: string
+  ): Observable<IHorarioSedePeriodo[]> {
+    const url = this.getUrl(this._getHorariosSedePeriodo);
+    
+    console.log('URL:', url);
     
     const params = new HttpParams()
       .set('i_sede_ccod', i_sede_ccod.toString())
+      .set('i_peri_ccod', i_periodo_ccod.toString())
       .set('i_inicio', i_inicio.toString())
       .set('i_limite', i_limite.toString())
       .set('i_sort', i_sort)
       .set('i_dir', i_dir)
       .set('i_filtro', i_filtro);
 
-    return this.http.get<IHorarioSede[]>(url, { params })
+    console.log('Params:', params.toString());
+
+    return this.http.get<IHorarioSedePeriodo[]>(url, { params })
+      .pipe(catchError(this.handleError));
+  }
+
+  getCboPeriodoActual():Observable<ICbo[]> {
+    const url = this.getUrl('Combobox/getPeriodoActual');
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.get<ICbo[]>(url, { headers })
       .pipe(catchError(this.handleError));
   }
 

@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 //Toastr
-import { ToastrService, ToastrModule } from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
 
 //RouterLink
 import { RouterModule, Router } from '@angular/router';
@@ -25,7 +25,6 @@ import { ICbo } from '../../models/cbo.model';
     MatFormFieldModule,
     RouterModule,
     CommonModule,
-    ToastrModule,
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
@@ -42,7 +41,26 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this._toastrNotify.warning('Cargando datos...', 'Cargando');
     this.getCboSedes(this.nuevoUsuario);
+    this.getCboPeriodoActual();
+  }
+  getCboPeriodoActual():Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.backendService.getCboPeriodoActual().subscribe(
+        (data: any) => {
+          console.log(data);
+          localStorage.setItem('periodoSelected', data[0].periodo);
+          this._toastrNotify.success('Se cargaron los datos periodo Actual', 'Éxito');
+          resolve();
+        },
+        (error: any) => {
+          this._toastrNotify.error(error.error, 'Error');
+          reject(error);
+        }
+      );
+    })
+    
   }
 
   getCboSedes(rut: string): Promise<void> {
@@ -50,7 +68,7 @@ export class HomeComponent implements OnInit {
       this.backendService.getSedes(rut).subscribe(
         (data: ICbo[]) => {
           this.lstSede = data;
-          this._toastrNotify.success('Se cargaron los datos', 'Éxito');
+          this._toastrNotify.success('Se cargaron los datos de las sedes', 'Éxito');
           resolve();
         },
         (error: any) => {

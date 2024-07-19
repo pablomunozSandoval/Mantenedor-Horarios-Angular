@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';  // Asegúrate de tene
 import { RouterModule } from '@angular/router'; // Importa RouterModule
 import { BackendService } from '../../services/backend.service';
 import { ICbo } from '../../models/cbo.model';
+import { Toast, ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-horario',
@@ -45,7 +46,7 @@ export class HorarioComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private backendService: BackendService) { }
+  constructor(private backendService: BackendService,    private _toastrNotify: ToastrService,) { }
 
   ngOnInit(): void {
     if (typeof window !== 'undefined' && window.localStorage) {
@@ -62,14 +63,16 @@ export class HorarioComponent implements OnInit, AfterViewInit {
   }
 
   loadHorarios(): void {
-    this.backendService.getHorariosBySede(this.sedeSelect.codigo, 0, 10, '0', 'asc', '')
+    this.dataSource.data = [];
+    this.backendService.getHorariosSedePeriodo(this.sedeSelect.codigo, this.periodoSelect.codigo, 0, 100, '0', 'asc', '')
       .subscribe(
         (data: any[]) => {
           this.dataSource.data = data;
         },
-        error => {
-          console.error('Error loading horarios', error);
+        (error: any) => {
+          this._toastrNotify.error(error.error, 'Error');
         }
+
       );
   }
 

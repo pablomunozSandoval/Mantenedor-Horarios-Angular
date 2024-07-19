@@ -1,4 +1,4 @@
-export interface IHorarioSede {
+export interface IHorarioSedePeriodo {
     SEDE_TDESC: string;
     HORA_CCOD: number;
     HORA_HINICIO: string;
