@@ -65,7 +65,6 @@ export class HomeComponent implements OnInit {
             if (typeof window !== 'undefined' && window.localStorage) {
               localStorage.setItem('periodoActual', periodoActual);
             }
-            this._toastrNotify.success('Se cargaron los datos del periodo actual', 'Éxito');
             resolve();
         },
         (error: any) => {
@@ -81,7 +80,7 @@ export class HomeComponent implements OnInit {
       this.backendService.getSedes(rut).subscribe(
         (data: ICbo[]) => {
           this.lstSede = data;
-          this._toastrNotify.success('Se cargaron los datos de las sedes', 'Éxito');
+
           resolve();
         },
         (error: any) => {
@@ -96,13 +95,8 @@ export class HomeComponent implements OnInit {
     const sedeSelected = this.selected;
     if (sedeSelected) {
       localStorage.setItem('sedeSelected', sedeSelected);
-      this._toastrNotify.success('Sede seleccionada guardada', 'Éxito');
+      this._toastrNotify.success('Sede seleccionada correctamente', 'Éxito');
       this.router.navigate(['/horario']); // Navegar a la página de horarios
-    } else {
-      this._toastrNotify.warning(
-        'No se ha seleccionado ninguna sede',
-        'Advertencia'
-      );
     }
   }
 }
