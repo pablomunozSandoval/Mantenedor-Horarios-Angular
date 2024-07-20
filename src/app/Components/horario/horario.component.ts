@@ -104,9 +104,9 @@ export class HorarioComponent implements OnInit, AfterViewInit {
     this.backendService.getHorariosSedePeriodo(codigoSede, codigoPeriodo, 0, 100, '0', 'asc', '')
       .subscribe(
         (data: IHorarioSedePeriodo[]) => {
-          console.log(data)
+          
           this.dataSource.data = data;
-          console.log(this.dataSource)
+          
         },
         (error: any) => {
           this._toastrNotify.error(error.error, 'Error');
@@ -147,28 +147,27 @@ export class HorarioComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  btnEditar(id: any): void {
-    const row: any = this.dataSource.data.find((x) => x.hora_ccod === id);
+  btnEditar(row: any): void { 
     this.openDialog(row);
   }
   
-  openDialog(data: any): void {
+  openDialog(dataRow: any): void {
+    console.log("datarow",dataRow)
     const dialogRef = this._dialog.open(DialogBoxComponent, {
       width: '750px',
       height: '320px',
       data: {
-        i_hora_ccod: data.hora_ccod,
-        i_sede_ccod: data.i_sede_ccod,
-        i_peri_ccod: data.i_peri_ccod,
-        i_hinicio: data.hora_hinicio,
-        i_htermino: data.hora_htermino,
-        i_turn_ccod: data.turn_tdesc,  // Ajuste aquí según tu modelo
-        i_audi_tusuario: data.audi_tusuario,
+        i_hora_ccod: dataRow.hora_ccod,
+        i_sede_ccod: this.sedeSelect.codigo,
+        i_peri_ccod: this.periodoCodigo,
+        i_hinicio: dataRow.hora_hinicio,
+        i_htermino: dataRow.hora_htermino,
+        i_turn_ccod: dataRow.turn_tdesc,  // Ajuste aquí según tu modelo
+        i_audi_tusuario: dataRow.audi_tusuario,
         i_origen: 0  // Si no tienes este campo en los datos, lo puedes dejar como está
       },
       disableClose: true,
-    });
-  
+    });  
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.backendService.updateHorario(result.i_hora_ccod, result.i_sede_ccod, result.i_peri_ccod, result.i_hinicio, result.i_htermino, result.i_turn_ccod, result.i_audi_tusuario, result.i_origen).subscribe(

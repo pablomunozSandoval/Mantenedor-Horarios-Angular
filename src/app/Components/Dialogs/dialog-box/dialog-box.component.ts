@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -21,7 +21,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatNativeDateModule
   ]
 })
-export class DialogBoxComponent {
+export class DialogBoxComponent implements OnInit {
   horarioForm: FormGroup;
 
   constructor(
@@ -41,13 +41,52 @@ export class DialogBoxComponent {
     });
   }
 
+  ngOnInit(): void {
+    console.log('Initial data:', this.data);
+
+    // Ensure form controls are set with correct values
+    this.horarioForm.get('i_hinicio')?.setValue(this.data.i_hinicio);
+    this.horarioForm.get('i_htermino')?.setValue(this.data.i_htermino);
+
+    this.horarioForm.get('i_audi_tusuario')?.setValue(this.data.i_audi_tusuario);
+    this.horarioForm.get('i_origen')?.setValue(this.data.i_origen);
+    this.horarioForm.get('i_hora_ccod')?.setValue(this.data.i_hora_ccod);
+    this.horarioForm.get('i_turn_ccod')?.setValue(this.data.i_turn_ccod);
+    
+    this.horarioForm.get('i_sede_ccod')?.setValue(this.data.i_sede_ccod);
+    this.horarioForm.get('i_peri_ccod')?.setValue(this.data.i_peri_ccod);
+
+
+    console.log('Form status:', this.horarioForm.status);
+    console.log('Form value:', this.horarioForm.value);
+    console.log('Form errors:', this.horarioForm.errors);
+
+
+    // Log each control status and value
+    for (const controlName in this.horarioForm.controls) {
+      if (this.horarioForm.controls.hasOwnProperty(controlName)) {
+        const control = this.horarioForm.get(controlName);
+        console.log(`Control ${controlName}:`, control?.status, control?.value, control?.errors);
+      }
+    }
+  }
+
   onNoClick(): void {
     this.dialogRef.close();
   }
 
   onSubmit(): void {
+    console.log('Form validity:', this.horarioForm.valid);
     if (this.horarioForm.valid) {
       this.dialogRef.close(this.horarioForm.value);
+    } else {
+      console.error('Form invalid:', this.horarioForm.errors);
+      for (const controlName in this.horarioForm.controls) {
+        if (this.horarioForm.controls.hasOwnProperty(controlName)) {
+          const control = this.horarioForm.get(controlName);
+          console.log(`Control ${controlName}:`, control?.status, control?.value, control?.errors);
+        }
+      }
     }
   }
 }
