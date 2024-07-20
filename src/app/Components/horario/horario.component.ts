@@ -34,8 +34,6 @@ import {LiveAnnouncer} from '@angular/cdk/a11y';
     MatButtonModule,
     MatSortModule,
     MatSort,
-    
-    
   ],
   templateUrl: './horario.component.html',
   styleUrls: ['./horario.component.css']
@@ -149,33 +147,43 @@ export class HorarioComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  btnEditar(id: number): void {
+  btnEditar(id: any): void {
     const row: any = this.dataSource.data.find((x) => x.hora_ccod === id);
     this.openDialog(row);
   }
-
-  btnEliminar(data: any): void {
-    this.openDialog(data);
-  }
-
-  openDialog(data?: any): void {
+  
+  openDialog(data: any): void {
     const dialogRef = this._dialog.open(DialogBoxComponent, {
-      width: '300px',
-      data: data || { i_hora_ccod: 1, i_sede_ccod: 1, i_peri_ccod: 1, i_hinicio: new Date(), i_htermino: new Date(), i_turn_ccod: 1, i_audi_tusuario: 'usuario', i_origen: 0 }
+      width: '750px',
+      height: '320px',
+      data: {
+        i_hora_ccod: data.hora_ccod,
+        i_sede_ccod: data.i_sede_ccod,
+        i_peri_ccod: data.i_peri_ccod,
+        i_hinicio: data.hora_hinicio,
+        i_htermino: data.hora_htermino,
+        i_turn_ccod: data.turn_tdesc,  // Ajuste aquí según tu modelo
+        i_audi_tusuario: data.audi_tusuario,
+        i_origen: 0  // Si no tienes este campo en los datos, lo puedes dejar como está
+      },
+      disableClose: true,
     });
-
+  
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.backendService.updateHorario(result.i_hora_ccod, result.i_sede_ccod, result.i_peri_ccod, result.i_hinicio, result.i_htermino, result.i_turn_ccod, result.i_audi_tusuario, result.i_origen).subscribe(
           (res: HorarioUpdateResult[]) => {
             console.log('Resultado:', res);
+            this._toastrNotify.success('Horario actualizado', 'Éxito');
             this.ngOnInit(); // Recargar los horarios después de la actualización
           },
           (error) => {
             console.error('Error:', error);
+            this._toastrNotify.error(error.error, 'Error');
           }
         );
       }
     });
   }
+  
 }

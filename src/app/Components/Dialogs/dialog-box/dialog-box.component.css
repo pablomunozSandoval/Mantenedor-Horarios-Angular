@@ -1,5 +1,22 @@
 mat-form-field {
-    display: block;
-    width: 100%;
-  }
-  
+  display: block;
+  width: 100%;
+}
+
+.input {
+  margin: 4px;
+}
+
+::ng-content .mat-flat-button {
+  background-color: linear-gradien (to right, #ced6dd, #6c757d);
+  color: white;
+  border-radius: 40px;
+}
+
+.mat-mdc-unelevated-button.mat-accent {
+  --mdc-filled-button-container-color: #676767;
+  --mdc-filled-button-label-text-color: white;
+  --mat-filled-button-state-layer-color: white;
+  --mat-filled-button-ripple-color: rgba(255, 255, 255, 0.1);
+  border-radius: 40px;
+}

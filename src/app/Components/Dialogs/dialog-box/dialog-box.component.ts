@@ -33,8 +33,8 @@ export class DialogBoxComponent {
       i_hora_ccod: [data.i_hora_ccod, Validators.required],
       i_sede_ccod: [data.i_sede_ccod, Validators.required],
       i_peri_ccod: [data.i_peri_ccod, Validators.required],
-      i_hinicio: [data.i_hinicio, Validators.required],
-      i_htermino: [data.i_htermino, Validators.required],
+      i_hinicio: [new Date(data.i_hinicio), Validators.required],
+      i_htermino: [new Date(data.i_htermino), Validators.required],
       i_turn_ccod: [data.i_turn_ccod, Validators.required],
       i_audi_tusuario: [data.i_audi_tusuario, Validators.required],
       i_origen: [data.i_origen, Validators.required]

@@ -7,7 +7,6 @@ import { filter } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class HomeGuard implements CanActivate {
-  private fromHome: boolean = false;
 
   constructor(private router: Router) {
     // Subscribe to router events to track navigation
@@ -19,20 +18,20 @@ export class HomeGuard implements CanActivate {
         return;
       }
       const currentUrl = event.url;
-      if (currentUrl === '/horario') {
-        this.fromHome = true;
-      } else if (currentUrl === '/') {
-        this.fromHome = true;
+      if (currentUrl === '/') {
+        localStorage.setItem('fromHome', 'true');
       }
     });
   }
 
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
-    if (!this.fromHome) {
+    const fromHome = localStorage.getItem('fromHome');
+    console.log('fromHome in canActivate:', fromHome);
+    if (fromHome !== 'true') {
       this.router.navigate(['/']);
       return false;
     }
-    this.fromHome = false;  // Reset the flag after navigation
+    localStorage.removeItem('fromHome');  // Reset the flag after navigation
     return true;
   }
 }

@@ -80,9 +80,9 @@
     <ng-container matColumnDef="action">
       <th mat-header-cell *matHeaderCellDef >Acción</th>
       <td mat-cell *matCellDef="let row; let i = $index">
-        <a class="mat-raised-button" color="primary" (click)="btnEditar(row.hora_ccod)">Editar</a>
+        <a class="mat-raised-button" color="primary" (click)="btnEditar(row)">Editar</a>
         <a> / </a>
-        <a class="mat-raised-button" color="primary" (click)="btnEliminar(row)">Eliminar</a>
+        
       </td>
     </ng-container>
 

@@ -1,41 +1,29 @@
-<h1 mat-dialog-title>Actualizar Horario</h1>
+<h3 mat-dialog-title>Editar Información</h3>
 <div mat-dialog-content>
   <form [formGroup]="horarioForm">
-    <mat-form-field>
-      <mat-label>Hora CCOD</mat-label>
-      <input matInput formControlName="i_hora_ccod">
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Sede CCOD</mat-label>
-      <input matInput formControlName="i_sede_ccod">
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Período CCOD</mat-label>
-      <input matInput formControlName="i_peri_ccod">
+    <mat-form-field appearance="outline">
+      <mat-label>Código</mat-label>
+      <input matInput formControlName="i_hora_ccod" placeholder="Código">
     </mat-form-field>
     <mat-form-field>
       <mat-label>Hora de Inicio</mat-label>
-      <input matInput [matDatepicker]="hinicioPicker" formControlName="i_hinicio">
+      <input matInput [matDatepicker]="hinicioPicker" formControlName="i_hinicio" placeholder="Hora de Inicio">
       <mat-datepicker-toggle matSuffix [for]="hinicioPicker"></mat-datepicker-toggle>
       <mat-datepicker #hinicioPicker></mat-datepicker>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Hora de Término</mat-label>
-      <input matInput [matDatepicker]="hterminoPicker" formControlName="i_htermino">
+      <input matInput [matDatepicker]="hterminoPicker" formControlName="i_htermino" placeholder="Hora de Término">
       <mat-datepicker-toggle matSuffix [for]="hterminoPicker"></mat-datepicker-toggle>
       <mat-datepicker #hterminoPicker></mat-datepicker>
     </mat-form-field>
     <mat-form-field>
-      <mat-label>Turno CCOD</mat-label>
-      <input matInput formControlName="i_turn_ccod">
+      <mat-label>Turno</mat-label>
+      <input matInput formControlName="i_turn_ccod" placeholder="Turno">
     </mat-form-field>
     <mat-form-field>
       <mat-label>Usuario</mat-label>
-      <input matInput formControlName="i_audi_tusuario">
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Origen</mat-label>
-      <input matInput formControlName="i_origen">
+      <input matInput formControlName="i_audi_tusuario" placeholder="Usuario">
     </mat-form-field>
   </form>
 </div>

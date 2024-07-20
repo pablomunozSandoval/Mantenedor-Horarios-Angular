@@ -14,6 +14,7 @@ import { RouterModule, Router } from '@angular/router';
 // Services
 import { BackendService } from '../../services/backend.service';
 import { ICbo } from '../../models/cbo.model';
+import { HomeGuard } from '../../guards/home.guard';
 
 @Component({
   selector: 'app-home',
@@ -132,11 +133,14 @@ export class HomeComponent implements OnInit {
     const sedeSelected = this.selected;
     if (sedeSelected) {
       localStorage.setItem('sedeSelected', sedeSelected);
+      localStorage.setItem('fromHome', 'true'); // Asegúrate de establecer fromHome antes de la navegación
       this._toastrNotify.success('Sede seleccionada correctamente', 'Éxito');
+      console.log('fromHome set to true in localStorage');
       this.obtenerPeriCCod(); // Obtener y guardar el código del período
       this.router.navigate(['/horario']); // Navegar a la página de horarios
     } else {
       this._toastrNotify.warning('No se ha seleccionado ninguna sede', 'Advertencia');
     }
   }
+  
 }
