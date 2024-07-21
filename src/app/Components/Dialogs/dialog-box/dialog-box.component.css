@@ -20,3 +20,14 @@ mat-form-field {
   --mat-filled-button-ripple-color: rgba(255, 255, 255, 0.1);
   border-radius: 40px;
 }
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+}

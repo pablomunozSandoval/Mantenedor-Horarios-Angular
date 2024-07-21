@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { ICbo } from '../models/cbo.model';
-import { IHorarioSedePeriodo } from '../models/horarioSedePeriodo.model';
 import { HorarioUpdateResult } from '../models/horarioUpdateResult.model';
 
 @Injectable({
@@ -52,7 +51,6 @@ export class BackendService {
       .set('i_dir', i_dir)
       .set('i_filtro', i_filtro);
 
-    console.log('Params:', params.toString());
 
     return this.http.get<any[]>(url, { params }).pipe(
       map(data => data.map(item => ({
@@ -66,6 +64,21 @@ export class BackendService {
       catchError(this.handleError)
     );
   }
+
+  getComboTurno(): Observable<ICbo[]> {
+    const url = this.getUrl('Combobox/getComboTurno');
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const body = {}; // Si necesitas enviar algún dato en el cuerpo de la solicitud, puedes añadirlo aquí
+
+    return this.http.post<any[]>(url, body, { headers }).pipe(
+      map(data => data.map(item => ({
+        codigo: item.turn_ccod,
+        descripcion: item.turn_tdesc
+      }))),
+      catchError(this.handleError)
+    );
+  }
+
 
   getCboPeriodoActual():Observable<any> {
     const url = this.getUrl('Combobox/getPeriodoActual');

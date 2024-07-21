@@ -1,30 +1,47 @@
 <h3 mat-dialog-title>Editar Información</h3>
-<div mat-dialog-content>
+<div mat-dialog-content class="row">
   <form [formGroup]="horarioForm">
-    <mat-form-field >
-      
-      <mat-label>Código</mat-label>
-        <input readonly matInput formControlName="i_hora_ccod"  >             
-    </mat-form-field>
+    <div class="col">
+      <mat-form-field>
+        <mat-label>Código</mat-label>
+        <input matInput formControlName="i_hora_ccod" readonly>
+        <mat-error *ngIf="horarioForm.get('i_hora_ccod')?.hasError('required')">
+          Código es obligatorio
+        </mat-error>
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Hora de Inicio</mat-label>
-      <input matInput type="time" formControlName="i_hinicio" >
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Hora de Inicio</mat-label>
+        <input matInput type="time" formControlName="i_hinicio">
+        <mat-error *ngIf="horarioForm.get('i_hinicio')?.hasError('required')">
+          Hora de Inicio es obligatoria
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <mat-form-field>
+        <mat-label>Hora de Término</mat-label>
+        <input matInput type="time" formControlName="i_htermino">
+        <mat-error *ngIf="horarioForm.get('i_htermino')?.hasError('required')">
+          Hora de Término es obligatoria
+        </mat-error>
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Hora de Termino</mat-label>
-      <input matInput type="time" formControlName="i_htermino" >
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Turno</mat-label>
-      <input readonly matInput formControlName="i_turn_ccod" placeholder="Turno">
-    </mat-form-field>
-
+      <mat-form-field>
+        <mat-label>Selecciona una opción</mat-label>
+        <mat-select formControlName="i_turn_ccod">
+          <mat-option *ngFor="let option of cboTurnos" [value]="option.codigo">
+            {{ option.descripcion }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="horarioForm.get('i_turn_ccod')?.hasError('required')">
+          Selección es obligatoria
+        </mat-error>
+      </mat-form-field>
+    </div>
   </form>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancelar</button>
-  <button mat-button (click)="onSubmit()">Actualizar</button>
+  <button mat-button [disabled]="!horarioForm.valid" (click)="onSubmit()">Actualizar</button>
 </div>
