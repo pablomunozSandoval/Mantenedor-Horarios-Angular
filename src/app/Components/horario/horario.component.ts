@@ -171,13 +171,15 @@ export class HorarioComponent implements OnInit, AfterViewInit {
         i_htermino: dataRow.hora_htermino, // Asegúrate de que estos son strings
         i_turn_ccod: dataRow.turn_tdesc,   // Ajuste aquí según tu modelo
         i_audi_tusuario: dataRow.audi_tusuario,
-        i_origen: 0, // Si no tienes este campo en los datos, lo puedes dejar como está
+        i_origen: 1, // Si no tienes este campo en los datos, lo puedes dejar como está
       },
       disableClose: true,
     });
   
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
+        console.log("dialog result:", result);
+
         this.backendService
           .updateHorario(
             result.i_hora_ccod,
@@ -191,9 +193,15 @@ export class HorarioComponent implements OnInit, AfterViewInit {
           )
           .subscribe(
             (res: HorarioUpdateResult[]) => {
-              console.log('Resultado:', res);
+              
+              console.log('res', res[0].resultado)
+              if (res[0].resultado === 'Se ha actualizado el registro correctamente.') {
               this._toastrNotify.success('Horario actualizado', 'Éxito');
-              this.ngOnInit(); // Recargar los horarios después de la actualización
+            }else{
+              this._toastrNotify.error(res[0].resultado, 'Error');
+            }
+            console.log('init')
+              this.ngOnInit(); 
             },
             (error) => {
               console.error('Error:', error);

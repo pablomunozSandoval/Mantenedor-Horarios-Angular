@@ -1,4 +1,4 @@
 export interface HorarioUpdateResult {
-    Codigo: number;
-    Resultado: string;
+    codigo: number;
+    resultado: string;
 }

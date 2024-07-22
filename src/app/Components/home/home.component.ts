@@ -32,7 +32,7 @@ import { HomeGuard } from '../../guards/home.guard';
 })
 export class HomeComponent implements OnInit {
   nuevoUsuario: string = '17190472';
-  nuevoNombre: string = 'Laura';
+  nuevoNombre: string = 'Laura Rayen Pendola Gambetta';
   selected: string = '';
   lstSede: ICbo[] = [];
   periodoDescripcion: string = '';

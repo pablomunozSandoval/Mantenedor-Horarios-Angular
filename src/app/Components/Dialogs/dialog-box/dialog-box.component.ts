@@ -53,11 +53,12 @@ export class DialogBoxComponent implements OnInit {
 
   ngOnInit(): void {
     this.getComboTurno();
+    console.log('turn_tdesc', typeof this.horarioForm.value['turn_tdesc']);
   }
 
   getComboTurno(): void {
     this.backendService.getComboTurno().subscribe((data) => {
-      console.log(data);
+      
       this.cboTurnos = data;
     });
   }
@@ -67,9 +68,8 @@ export class DialogBoxComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.horarioForm.value);
-    console.log('Form validity:', this.horarioForm.valid);
     if (this.horarioForm.valid) {
+      console.log('Form submitted:', this.horarioForm.value);
       this.dialogRef.close(this.horarioForm.getRawValue());
     } else {
       console.error('Form invalid:', this.horarioForm.errors);
