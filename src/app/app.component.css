@@ -1,0 +1,60 @@
+.card {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    font-family: "Roboto Condensed",sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'liga';
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border-radius: 0.25rem;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+    border: 0;
+    font-weight: 400;
+    padding: 15px;
+}
+
+ .card-header{
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    font-family: "Roboto Condensed",sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'liga';
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    word-wrap: break-word;
+    font-weight: 400;
+    box-sizing: border-box;
+    border-bottom: 1px solid #d8d8d8;
+    padding-bottom: 0.6rem;
+ }
+
+h4{
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    line-height: 1.5;
+    color: #333;
+    word-wrap: break-word;
+    box-sizing: border-box;
+    margin-top: 0;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'liga';
+    float: left!important;
+    font-size: 125%;
+    font-family: "Fjalla";
+    margin-bottom: 0!important;
+
+}

@@ -40,13 +40,12 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 })
 export class HorarioComponent implements OnInit, AfterViewInit {
   periodoSelect: ICbo = { codigo: 0, descripcion: '' };
-  periodoDescripcion: string = '';
-  periodoCodigo: number = 0;
+  periDescrActual: string = '';
+  periCodSelect: number = 0;
   sedeSelect: ICbo = { codigo: 0, descripcion: '' };
   navTabEvent: number = 0;
-  selected = '';
   lstPeriodos: ICbo[] = [];
-  selectedPeriodo: number | null = null; // Nuevo: almacena el período seleccionado
+  htmlPeriSelect: any;
   dataSource = new MatTableDataSource<IHorarioSedePeriodo>();
 
   displayedColumns: string[] = [
@@ -72,17 +71,20 @@ export class HorarioComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     if (typeof window !== 'undefined' && window.localStorage) {
-      const sedeSelected = localStorage.getItem('sedeSelected');
-      this.periodoDescripcion = localStorage.getItem('periodoActual') || '';
-      const periodoCodigo = localStorage.getItem('periodoCodigo');
-      this.sedeSelect.codigo = sedeSelected ? Number(sedeSelected) : 0;
-      this.periodoCodigo = periodoCodigo ? Number(periodoCodigo) : 0;
+      const codSedeSelect = Number(localStorage.getItem('sedeSelected'));
+      this.sedeSelect.codigo = codSedeSelect;
 
-      if (this.sedeSelect.codigo && this.periodoCodigo) {
-        this.loadHorarios(this.sedeSelect.codigo, this.periodoCodigo);
+      this.periDescrActual = localStorage.getItem('periodoActual') || '';
+      const periCodActual = Number(localStorage.getItem('periodoCodigo'));
+
+      this.periCodSelect = this.navTabEvent === 0 ? periCodActual : this.htmlPeriSelect;
+      console.log (this.periCodSelect , this.sedeSelect.codigo);
+     
+      if (this.sedeSelect.codigo && this.periCodSelect) {
+        this.loadHorarios(this.sedeSelect.codigo, this.periCodSelect);
       }
     }
-    this.loadPeriodos(); // Nuevo: carga los períodos
+    this.loadPeriodos(); 
   }
 
   ngAfterViewInit() {
@@ -131,20 +133,25 @@ export class HorarioComponent implements OnInit, AfterViewInit {
 
   onPeriodoChange(): void {
     // Nuevo: carga los horarios cuando cambia el período seleccionado
-    if (this.selectedPeriodo !== null) {
-      this.loadHorarios(this.sedeSelect.codigo, this.selectedPeriodo);
+    if (this.htmlPeriSelect !== null) {
+      this.loadHorarios(this.sedeSelect.codigo, this.htmlPeriSelect);
     }
   }
 
   onTabChange(event: any): void {
-    // Implementación del método onTabChange
     this.navTabEvent = event.index;
+  
     if (this.navTabEvent === 0) {
+      console.log('navTabEvent', this.navTabEvent);
       // Cargar horarios para el período actual
-      this.loadHorarios(this.sedeSelect.codigo, this.periodoCodigo);
-    } else if (this.navTabEvent === 1 && this.selectedPeriodo !== null) {
-      // Cargar horarios para el período seleccionado en "Otros Periodos"
-      this.loadHorarios(this.sedeSelect.codigo, this.selectedPeriodo);
+      this.loadHorarios(this.sedeSelect.codigo, this.periCodSelect);
+    } else if (this.navTabEvent === 1 && this.htmlPeriSelect !== null) {
+      console.log (this.htmlPeriSelect)
+      if (this.htmlPeriSelect !== undefined) {
+        console.log('navTabEvent', this.navTabEvent);
+        this.loadHorarios(this.sedeSelect.codigo, this.htmlPeriSelect);
+      }
+      
     }
   }
 
@@ -153,20 +160,33 @@ export class HorarioComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+
+  btnInsertar(row: any): void {
+    this.openDialog(row,1);
+  }
   btnEditar(row: any): void {
-    this.openDialog(row);
+    this.openDialog(row, 2);
+  }
+  btnEliminar(row: any): void {
+    this.openDialog(row,3);
   }
 
-  openDialog(dataRow: any): void {
-    console.log('datarow', dataRow);
+
+  openDialog(dataRow: any, type: number): void {
+
+    if(this.navTabEvent === 1) {
+      this.periCodSelect = this.htmlPeriSelect ? this.htmlPeriSelect: this.periCodSelect;
+
+    }
   
     const dialogRef = this._dialog.open(DialogBoxComponent, {
       width: '750px',
       height: '320px',
       data: {
+        type_button: type,
         i_hora_ccod: dataRow.hora_ccod,
         i_sede_ccod: this.sedeSelect.codigo,
-        i_peri_ccod: this.periodoCodigo,
+        i_peri_ccod: this.periCodSelect,
         i_hinicio: dataRow.hora_hinicio,  // Asegúrate de que estos son strings
         i_htermino: dataRow.hora_htermino, // Asegúrate de que estos son strings
         i_turn_ccod: dataRow.turn_tdesc,   // Ajuste aquí según tu modelo
@@ -185,8 +205,8 @@ export class HorarioComponent implements OnInit, AfterViewInit {
             result.i_hora_ccod,
             result.i_sede_ccod,
             result.i_peri_ccod,
-            result.i_hinicio,   // Ya son strings, no hace falta convertir
-            result.i_htermino,  // Ya son strings, no hace falta convertir
+            result.i_hinicio,   
+            result.i_htermino,  
             result.i_turn_ccod,
             result.i_audi_tusuario,
             result.i_origen

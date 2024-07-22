@@ -1,0 +1,60 @@
+button{
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: inherit;
+    text-transform: none;
+    position: relative;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+    margin: 0 0.375rem;
+    border: 0;
+    cursor: pointer;
+    white-space: normal;
+    word-wrap: break-word;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    padding: 0.375rem 0.75rem;
+    line-height: 1.5;
+    transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out;
+    border-radius: 10em;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: #666!important;
+    color: #fff!important;
+    appearance: none;
+}
+.nav-tabs .nav-item .nav-link.active {
+    color: black;
+    border-bottom: 4px solid #a74040;
+   }
+
+.card{
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    font-family: "Roboto Condensed",sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'liga';
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border-radius: 0.25rem;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+    border: 0;
+    font-weight: 400;
+    padding: 15px;
+
+}

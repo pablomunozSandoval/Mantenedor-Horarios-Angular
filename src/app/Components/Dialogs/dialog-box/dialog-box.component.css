@@ -31,3 +31,147 @@ mat-form-field {
   display: flex;
   flex-direction: column;
 }
+
+.modal{
+
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  font-family: "Roboto Condensed",sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'liga';
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  box-sizing: border-box;
+  position: relative;
+  width: auto;
+  pointer-events: none;
+  border-radius: 0.125rem;
+  max-width: 800px;
+  margin: 1.75rem auto;
+  transition: transform 0.3s ease-out,-webkit-transform 0.3s ease-out;
+  transform: translate(0,0);
+}
+.modal-header{
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  font-family: "Roboto Condensed",sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'liga';
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  pointer-events: auto;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  border-top-left-radius: 0.125rem;
+  border-top-right-radius: 0.125rem;
+  border-bottom: 1px solid #d8d8d8;
+  padding-bottom: 10px;
+}
+.heading .lead {
+
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'liga';
+  line-height: 1.5;
+  color: #333;
+  pointer-events: auto;
+  box-sizing: border-box;
+  margin-top: 0;
+  font-family: "Fjalla";
+  margin-bottom: 0;
+  font-size: 1.25rem;
+}
+
+button .btn-default{
+
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-font-smoothing: antialiased;
+  pointer-events: auto;
+  box-sizing: border-box;
+  border-radius: 0;
+  margin: 0;
+  font-family: inherit;
+  overflow: visible;
+  text-transform: none;
+  float: right;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+  appearance: none;
+  cursor: pointer;
+  opacity: 1;
+}
+
+.modal-body{
+
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  font-family: "Roboto Condensed",sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'liga';
+  font-size: 16px;
+  line-height: 1.5;
+  pointer-events: auto;
+  box-sizing: border-box;
+  padding-right: 0!important;
+  padding-left: 0!important;
+  position: relative;
+  flex: 1 1 auto;
+  padding: 15px;
+  color: #333;
+}
+
+button {
+  -webkit-text-size-adjust: 100%;
+  font-family: "Roboto Condensed",sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'liga';
+  font-size: 16px;
+  pointer-events: auto;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+  margin: 0 0.375rem;
+  border: 0;
+  cursor: pointer;
+  white-space: normal;
+  word-wrap: break-word;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  padding: 0.375rem 0.75rem;
+  line-height: 1.5;
+  transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out;
+  border-radius: 10em;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: #d8d8d8!important;
+  color: #333!important;
+  display: inline-block;
+  text-decoration: none;
+  margin-right: .25rem;
+
+}

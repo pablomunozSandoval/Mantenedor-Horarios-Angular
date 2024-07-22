@@ -61,7 +61,6 @@ export class HomeComponent implements OnInit {
     if (typeof window !== 'undefined' && window.localStorage) {
       this.periodoDescripcion = localStorage.getItem('periodoActual') || '';
       const periodos = localStorage.getItem('periodos');
-      console.log(periodos);
       if (this.periodoDescripcion && periodos) {
         try {
           const periodosArray: ICbo[] = JSON.parse(periodos);

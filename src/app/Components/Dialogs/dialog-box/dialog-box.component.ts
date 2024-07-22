@@ -32,6 +32,9 @@ export class DialogBoxComponent implements OnInit {
   horarioForm: FormGroup;
   cboTurnos: ICbo[] = [];
   turnSelect: number = 0;
+  btn_insertar : boolean =false
+  btn_editar :  boolean= false;
+  btn_eliminar: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<DialogBoxComponent>,
@@ -53,12 +56,23 @@ export class DialogBoxComponent implements OnInit {
 
   ngOnInit(): void {
     this.getComboTurno();
-    console.log('turn_tdesc', typeof this.horarioForm.value['turn_tdesc']);
+    
+    this.enableForm();
+  }
+
+  enableForm(): void {
+    const type_button = this.data.type_button
+    if (type_button === 1){
+      this.btn_insertar=true;      
+    }else if (type_button === 2) {
+      this.btn_editar=true
+    }else if (type_button === 3) {
+      this.btn_eliminar=true
+    }
   }
 
   getComboTurno(): void {
-    this.backendService.getComboTurno().subscribe((data) => {
-      
+    this.backendService.getComboTurno().subscribe((data) => {      
       this.cboTurnos = data;
     });
   }
