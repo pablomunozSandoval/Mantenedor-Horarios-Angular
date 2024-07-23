@@ -1,44 +1,97 @@
-<mat-toolbar class="custom-toolbar">
-  <a class="navbar-brand" href="https://www.inacap.cl">
-    <div class="d-flex">
-      <picture>
-        <source class="logo-mobile" media="(max-width: 576px)" srcset="https://digital.inacap.cl/template-aplicaciones/img/isotipo.png">
-        <img class="logo-inacap" src="https://www.inacap.cl/web/template-aplicaciones/img/logo-inacap.png" alt="INACAP">
-      </picture>
+<header class="header">
+  <div class="header-container">
+    <div class="header-logo">
+      <a href="https://www.inacap.cl">
+        <img src="https://www.inacap.cl/web/template-aplicaciones/img/isotipo.png" alt="INACAP" class="logo-mobile">
+        <img src="https://www.inacap.cl/web/template-aplicaciones/img/logo-inacap.png" alt="INACAP" class="logo">
+      </a>
     </div>
-  </a>
-
-  <div class="mantenedor">
-    <div class="p-2">
-      <div>{{ title }}</div>
+    <div class="header-title">
+      <h1 id="title">
+        <a href="#">{{ title }}</a>
+      </h1>
     </div>
-  </div>
-
-  <span class="example-spacer"></span>
-
-  <div class="d-flex user-section">
     <div class="user-info">
-      <div class="colab"> {{colaborador}}</div>
+      <div class="user-name mr-4">
+        <p>{{ colaborador }}</p>
+      </div>
+      <div class="user-mobile-menu user-button">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <p class="dropdown-user-name">{{ colaborador }}</p>
+          <p class="dropdown-title dropdown-title--border">Accesibilidad</p>
+          <ul class="accesibility-menu">
+            <li class="accesibility-menu__item">
+              <div (click)="darkMode()" class="d-flex align-items-center justify-content-between">
+                <span class="tipo-de-modo">Modo Oscuro</span>
+                <div class="d-flex justify-content-center">
+                  <span><mat-icon>brightness_medium</mat-icon></span>
+                </div>
+              </div>
+            </li>
+            <li class="accesibility-menu__item">
+              <div class="d-flex align-items-center justify-content-between">
+                <span>Tamaño de letra</span>
+                <div class="d-flex justify-content-center">
+                  <button mat-icon-button (click)="decreaseFontSize()">
+                    <mat-icon>remove</mat-icon>
+                  </button>
+                  <button mat-icon-button (click)="increaseFontSize()">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <p class="dropdown-title dropdown-title--border">Cuenta</p>
+          <ul class="accesibility-menu">
+            <li class="accesibility-menu__item">
+              <div class="d-flex align-items-center justify-content-between" (click)="logout()">
+                <span id="tipo-de-modo">Cerrar Sesión</span>
+                <div class="d-flex justify-content-center">
+                  <a href="https://portales.inacap.cl/"><mat-icon>exit_to_app</mat-icon></a>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </mat-menu>
+      </div>
+      <div class="user-desktop-icons">
+        <button mat-icon-button [matMenuTriggerFor]="desktopMenu">
+          <mat-icon>accessibility</mat-icon>
+        </button>
+        <mat-menu #desktopMenu="matMenu">
+          <p class="dropdown-title">Accesibilidad</p>
+          <ul class="accesibility-menu">
+            <li class="accesibility-menu__item">
+              <div (click)="darkMode()" class="d-flex align-items-center justify-content-between">
+                <span class="tipo-de-modo">Modo Oscuro</span>
+                <div class="d-flex justify-content-center">
+                  <span><mat-icon>brightness_medium</mat-icon></span>
+                </div>
+              </div>
+            </li>
+            <li class="accesibility-menu__item">
+              <div class="d-flex align-items-center justify-content-between">
+                <span>Tamaño de letra</span>
+                <div class="d-flex justify-content-center">
+                  <button mat-icon-button (click)="decreaseFontSize()">
+                    <mat-icon>remove</mat-icon>
+                  </button>
+                  <button mat-icon-button (click)="increaseFontSize()">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </mat-menu>
+        <button mat-icon-button (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon>
+        </button>
+      </div>
     </div>
-    <button mat-icon-button [matMenuTriggerFor]="menu">
-      <mat-icon>menu</mat-icon>
-    </button>
   </div>
-</mat-toolbar>
-
-<mat-menu #menu="matMenu">
-  <button mat-menu-item (click)="openNotifications()">
-    <mat-icon>notifications</mat-icon>
-    <span>Notificaciones</span>
-  </button>
-  <button mat-menu-item (click)="openAccessibility()">
-    <mat-icon>accessibility</mat-icon>
-    <span>Accesibilidad</span>
-  </button>
-  <button mat-menu-item (click)="logout()">
-    <mat-icon>exit_to_app</mat-icon>
-    <span>Salir</span>
-  </button>
-</mat-menu>
-
-
+</header>

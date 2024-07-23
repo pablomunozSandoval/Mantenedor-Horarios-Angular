@@ -1,29 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Optional, Inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
-// Material Select Module
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-// Toastr
+import { MatButtonModule } from '@angular/material/button';
 import { ToastrService } from 'ngx-toastr';
-
-// RouterLink
 import { RouterModule, Router } from '@angular/router';
-// Services
 import { BackendService } from '../../services/backend.service';
 import { ICbo } from '../../models/cbo.model';
-import { HomeGuard } from '../../guards/home.guard';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
     FormsModule,
+    ReactiveFormsModule,
     MatInputModule,
     MatSelectModule,
     MatFormFieldModule,
+    MatButtonModule,
     RouterModule,
     CommonModule,
   ],
@@ -31,20 +29,27 @@ import { HomeGuard } from '../../guards/home.guard';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
+  buscarForm: FormGroup = new FormGroup({});
   nuevoUsuario: string = '17190472';
   nuevoNombre: string = 'Laura Rayen Pendola Gambetta';
-  selected: string = '';
   lstSede: ICbo[] = [];
   periodoDescripcion: string = '';
   periodoCodigo: number | null = null;
 
   constructor(
+    private fb: FormBuilder,
     private backendService: BackendService,
     private _toastrNotify: ToastrService,
-    private router: Router
+    private router: Router,
+    @Optional() public dialogRef: MatDialogRef<HomeComponent>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   ngOnInit(): void {
+    this.buscarForm = this.fb.group({
+      sede: ['', Validators.required],
+    });
+
     this.getCboSedes(this.nuevoUsuario);
     this.getPeriodoActual();
     this.getCboOtrosPeriodos();
@@ -64,18 +69,29 @@ export class HomeComponent implements OnInit {
       if (this.periodoDescripcion && periodos) {
         try {
           const periodosArray: ICbo[] = JSON.parse(periodos);
-          const periodoEncontrado = periodosArray.find(periodo => periodo.descripcion === this.periodoDescripcion);
-          
+          const periodoEncontrado = periodosArray.find(
+            (periodo) => periodo.descripcion === this.periodoDescripcion
+          );
+
           if (periodoEncontrado) {
             this.periodoCodigo = periodoEncontrado.codigo;
-            localStorage.setItem('periodoCodigo', this.periodoCodigo.toString());
+            localStorage.setItem(
+              'periodoCodigo',
+              this.periodoCodigo.toString()
+            );
           } else {
-            this._toastrNotify.warning('No se encontró el período actual en la lista de períodos', 'Advertencia');
+            this._toastrNotify.warning(
+              'No se encontró el período actual en la lista de períodos',
+              'Advertencia'
+            );
             this.periodoCodigo = null;
           }
         } catch (error) {
           console.error('Error parsing periodos from localStorage', error);
-          this._toastrNotify.error('Error al procesar los períodos almacenados', 'Error');
+          this._toastrNotify.error(
+            'Error al procesar los períodos almacenados',
+            'Error'
+          );
           this.periodoCodigo = null;
         }
       }
@@ -101,7 +117,7 @@ export class HomeComponent implements OnInit {
         (data: any) => {
           const periodoDescripcion = data[0].Periodo;
           if (typeof window !== 'undefined' && window.localStorage) {
-            localStorage.setItem('periodoActual', periodoDescripcion);
+            localStorage.setItem('periodoActual', periodoDescripcion);           
           }
           resolve();
         },
@@ -128,18 +144,49 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  onClickBtn() {
-    const sedeSelected = this.selected;
-    if (sedeSelected) {
-      localStorage.setItem('sedeSelected', sedeSelected);
-      localStorage.setItem('fromHome', 'true'); // Asegúrate de establecer fromHome antes de la navegación
-      this._toastrNotify.success('Sede seleccionada correctamente', 'Éxito');
-      console.log('fromHome set to true in localStorage');
-      this.obtenerPeriCCod(); // Obtener y guardar el código del período
-      this.router.navigate(['/horario']); // Navegar a la página de horarios
-    } else {
-      this._toastrNotify.warning('No se ha seleccionado ninguna sede', 'Advertencia');
+  onSubmit(): void {
+    this.onClickBtn();
+  }
+
+  onCancel(): void {
+    if (this.dialogRef) {
+      this.dialogRef.close();
     }
   }
-  
+
+  onClickBtn() {
+    if (this.buscarForm.valid) {
+      const sedeSelected = this.buscarForm.get('sede')?.value;
+      if (sedeSelected) {
+        localStorage.setItem('sedeSelected', sedeSelected.toString());
+
+        const sede = this.lstSede.find((sede) => sede.codigo === sedeSelected);
+        if (sede) {
+          localStorage.setItem('sedeSelectedDescr', sede.descripcion);
+        } else {
+          localStorage.setItem('sedeSelectedDescr', 'Sin Sede');
+        }
+
+        localStorage.setItem('fromHome', 'true'); // Asegúrate de establecer fromHome antes de la navegación
+        this._toastrNotify.success('Sede seleccionada correctamente', 'Éxito');
+        console.log('fromHome set to true in localStorage');
+
+        if (this.dialogRef) {
+          // Si se usa como diálogo, ciérralo
+          this.dialogRef.close({
+            sedeSelected,
+            sedeDescripcion: sede ? sede.descripcion : 'Sin Sede'
+          });
+        } else {
+          // Si se usa como página principal, redirige
+          this.obtenerPeriCCod(); // Obtener y guardar el código del período
+          this.router.navigate(['/horario']); // Navegar a la página de horarios
+        }
+      } else {
+        this._toastrNotify.warning('No se ha seleccionado ninguna sede', 'Advertencia');
+      }
+    } else {
+      this._toastrNotify.warning('Formulario no válido', 'Advertencia');
+    }
+  }
 }

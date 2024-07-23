@@ -6,7 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { BackendService } from '../../services/backend.service';
 import { ICbo } from '../../models/cbo.model';
 import { ToastrService } from 'ngx-toastr';
@@ -15,9 +15,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../Dialogs/dialog-box/dialog-box.component';
 import { HorarioUpdateResult } from '../../models/horarioUpdateResult.model';
 import { MatButtonModule } from '@angular/material/button';
-//tabla
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { MatIconModule } from '@angular/material/icon';
+import { HomeComponent } from '../home/home.component';
 
 @Component({
   selector: 'app-horario',
@@ -33,7 +34,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
     RouterModule,
     MatButtonModule,
     MatSortModule,
-    MatSort,
+    MatIconModule,
   ],
   templateUrl: './horario.component.html',
   styleUrls: ['./horario.component.css'],
@@ -58,12 +59,14 @@ export class HorarioComponent implements OnInit, AfterViewInit {
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  sedeDescripcion: any;
+  router: any;
 
   constructor(
     private backendService: BackendService,
     private _toastrNotify: ToastrService,
     private _dialog: MatDialog,
-    private _liveAnnouncer: LiveAnnouncer
+    private _liveAnnouncer: LiveAnnouncer,
   ) {
     this.sort = new MatSort();
   }
@@ -72,19 +75,21 @@ export class HorarioComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     if (typeof window !== 'undefined' && window.localStorage) {
       const codSedeSelect = Number(localStorage.getItem('sedeSelected'));
+      const descrSedeSelect = localStorage.getItem('sedeSelectedDescr');
       this.sedeSelect.codigo = codSedeSelect;
+      this.sedeSelect.descripcion = descrSedeSelect || 'sin sede';
 
       this.periDescrActual = localStorage.getItem('periodoActual') || '';
       const periCodActual = Number(localStorage.getItem('periodoCodigo'));
 
       this.periCodSelect = this.navTabEvent === 0 ? periCodActual : this.htmlPeriSelect;
-      console.log (this.periCodSelect , this.sedeSelect.codigo);
-     
+      console.log(this.periCodSelect, this.sedeSelect.codigo);
+
       if (this.sedeSelect.codigo && this.periCodSelect) {
         this.loadHorarios(this.sedeSelect.codigo, this.periCodSelect);
       }
     }
-    this.loadPeriodos(); 
+    this.loadPeriodos();
   }
 
   ngAfterViewInit() {
@@ -92,11 +97,32 @@ export class HorarioComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
+  openHomeDialog(): void {
+    const dialogRef = this._dialog.open(HomeComponent, {
+      width: '750px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.sedeSelect.codigo = result.sedeSelected;
+        this.sedeSelect.descripcion = result.sedeDescripcion;
+        localStorage.setItem('sedeSelected', this.sedeSelect.codigo.toString());
+        localStorage.setItem('sedeSelectedDescr', this.sedeSelect.descripcion);
+        this._toastrNotify.success('Sede seleccionada correctamente', 'Éxito');
+        this.refreshPage(); // Refrescar la página con la nueva sede seleccionada
+      } else {
+        this._toastrNotify.warning('No se ha seleccionado ninguna sede', 'Advertencia');
+      }
+    });
+  }
+
+  refreshPage() {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/horario']);
+    });
+  }
+
   announceSortChange(sortState: Sort) {
-    // This example uses English messages. If your application supports
-    // multiple language, you would internationalize these strings.
-    // Furthermore, you can customize the message to add additional
-    // details about the values being sorted.
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
@@ -106,7 +132,6 @@ export class HorarioComponent implements OnInit, AfterViewInit {
 
   loadHorarios(codigoSede: number, codigoPeriodo: number): void {
     this.dataSource.data = [];
-    console.log('estas aqui en load horarios');
     this.backendService
       .getHorariosSedePeriodo(codigoSede, codigoPeriodo, 0, 100, '0', 'asc', '')
       .subscribe(
@@ -120,7 +145,6 @@ export class HorarioComponent implements OnInit, AfterViewInit {
   }
 
   loadPeriodos(): void {
-    // Nuevo: carga los períodos
     this.backendService.getCboOtrosPeriodos().subscribe(
       (data: ICbo[]) => {
         this.lstPeriodos = data;
@@ -132,7 +156,6 @@ export class HorarioComponent implements OnInit, AfterViewInit {
   }
 
   onPeriodoChange(): void {
-    // Nuevo: carga los horarios cuando cambia el período seleccionado
     if (this.htmlPeriSelect !== null) {
       this.loadHorarios(this.sedeSelect.codigo, this.htmlPeriSelect);
     }
@@ -140,18 +163,13 @@ export class HorarioComponent implements OnInit, AfterViewInit {
 
   onTabChange(event: any): void {
     this.navTabEvent = event.index;
-  
+
     if (this.navTabEvent === 0) {
-      console.log('navTabEvent', this.navTabEvent);
-      // Cargar horarios para el período actual
       this.loadHorarios(this.sedeSelect.codigo, this.periCodSelect);
     } else if (this.navTabEvent === 1 && this.htmlPeriSelect !== null) {
-      console.log (this.htmlPeriSelect)
       if (this.htmlPeriSelect !== undefined) {
-        console.log('navTabEvent', this.navTabEvent);
         this.loadHorarios(this.sedeSelect.codigo, this.htmlPeriSelect);
       }
-      
     }
   }
 
@@ -160,25 +178,23 @@ export class HorarioComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-
   btnInsertar(row: any): void {
-    this.openDialog(row,1);
+    this.openDialog(row, 1);
   }
+
   btnEditar(row: any): void {
     this.openDialog(row, 2);
   }
+
   btnEliminar(row: any): void {
-    this.openDialog(row,3);
+    this.openDialog(row, 3);
   }
 
-
   openDialog(dataRow: any, type: number): void {
-
-    if(this.navTabEvent === 1) {
-      this.periCodSelect = this.htmlPeriSelect ? this.htmlPeriSelect: this.periCodSelect;
-
+    if (this.navTabEvent === 1) {
+      this.periCodSelect = this.htmlPeriSelect ? this.htmlPeriSelect : this.periCodSelect;
     }
-  
+
     const dialogRef = this._dialog.open(DialogBoxComponent, {
       width: '750px',
       height: '320px',
@@ -187,50 +203,42 @@ export class HorarioComponent implements OnInit, AfterViewInit {
         i_hora_ccod: dataRow.hora_ccod,
         i_sede_ccod: this.sedeSelect.codigo,
         i_peri_ccod: this.periCodSelect,
-        i_hinicio: dataRow.hora_hinicio,  // Asegúrate de que estos son strings
-        i_htermino: dataRow.hora_htermino, // Asegúrate de que estos son strings
-        i_turn_ccod: dataRow.turn_tdesc,   // Ajuste aquí según tu modelo
+        i_hinicio: dataRow.hora_hinicio,
+        i_htermino: dataRow.hora_htermino,
+        i_turn_ccod: dataRow.turn_tdesc,
         i_audi_tusuario: dataRow.audi_tusuario,
-        i_origen: 1, // Si no tienes este campo en los datos, lo puedes dejar como está
+        i_origen: 1,
       },
       disableClose: true,
     });
-  
+
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log("dialog result:", result);
-
         this.backendService
           .updateHorario(
             result.i_hora_ccod,
             result.i_sede_ccod,
             result.i_peri_ccod,
-            result.i_hinicio,   
-            result.i_htermino,  
+            result.i_hinicio,
+            result.i_htermino,
             result.i_turn_ccod,
             result.i_audi_tusuario,
             result.i_origen
           )
           .subscribe(
             (res: HorarioUpdateResult[]) => {
-              
-              console.log('res', res[0].resultado)
               if (res[0].resultado === 'Se ha actualizado el registro correctamente.') {
-              this._toastrNotify.success('Horario actualizado', 'Éxito');
-            }else{
-              this._toastrNotify.error(res[0].resultado, 'Error');
-            }
-            console.log('init')
-              this.ngOnInit(); 
+                this._toastrNotify.success('Horario actualizado', 'Éxito');
+              } else {
+                this._toastrNotify.error(res[0].resultado, 'Error');
+              }
+              this.ngOnInit();
             },
             (error) => {
-              console.error('Error:', error);
               this._toastrNotify.error(error.error, 'Error');
             }
           );
       }
     });
   }
-  
-
 }

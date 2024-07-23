@@ -1,9 +1,124 @@
-<!-- Sección de Búsqueda de Sede -->
+<div class="card tss">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-12 d-flex align-items-end justify-content-between">
+        <h4 class="float-left heading h4-responsive mb-0" style="font-size: 125%; font-family: Fjalla;">Resultados </h4>
+        <div class="d-flex">
+          <button mat-button (click)="openHomeDialog()" class="btn btn-outline waves-effect waves-light d-flex align-items-center">
+            <span>Nueva Búsqueda</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="row">
+      <div class="col-12">
+        <mat-tab-group (selectedTabChange)="onTabChange($event)">
+          <mat-tab label="Horario sede {{sedeSelect.descripcion}} - {{periDescrActual}}">
+            <div class="card-body">
+              <div class="tab-content">
+                <div id="panel1" role="tabpanel" class="tab-pane fade in active show">
+                  <table class="table table-hover table-striped table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Código</th>
+                        <th>Hora Inicio</th>
+                        <th>Hora Término</th>
+                        <th>Turno</th>
+                        <th>Usuario</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let row of dataSource.data">
+                        <td>{{ row.hora_ccod }}</td>
+                        <td>{{ row.hora_hinicio}}</td>
+                        <td>{{ row.hora_htermino}}</td>
+                        <td>{{ row.turn_tdesc}}</td>
+                        <td>{{ row.audi_tusuario }}</td>
+                        <td>
+                          <button mat-icon-button (click)="btnEditar(row)">
+                            <mat-icon>edit</mat-icon>
+                          </button>
+                          <button mat-icon-button (click)="btnEliminar(row)">
+                            <mat-icon>delete</mat-icon>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="Horarios Otros Periodos">
+            <form novalidate>
+              <div class="row">
+                <div class="col-12 col-md-6">
+                  <mat-form-field appearance="fill" style="width: 100%;">
+                    <mat-select id="select-periodo" formControlName="periodo" required>
+                      <mat-option *ngFor="let periodo of lstPeriodos" [value]="periodo.codigo">
+                        {{ periodo.descripcion }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-label>Periodo</mat-label>
+                  </mat-form-field>
+                </div>
+              </div>
+            </form>
+            <div class="card-body">
+              <div class="tab-content">
+                <div id="panel2" role="tabpanel" class="tab-pane fade">
+                  <table class="table table-hover table-striped table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Código</th>
+                        <th>Hora Inicio</th>
+                        <th>Hora Término</th>
+                        <th>Turno</th>
+                        <th>Tipo Horario</th>
+                        <th>Usuario</th>
+                        <th>Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let row of dataSource.data">
+                        <td>{{ row.hora_ccod }}</td>
+                        <td>{{ row.hora_hinicio}}</td>
+                        <td>{{ row.hora_htermino }}</td>
+                        <td>{{ row.turn_tdesc }}</td>                        
+                        <td>{{ row.audi_tusuario }}</td>
+                        <td>
+                          <button mat-icon-button (click)="btnInsertar(row)">
+                            <mat-icon>add</mat-icon>
+                          </button>
+                          <button mat-icon-button (click)="btnEditar(row)">
+                            <mat-icon>edit</mat-icon>
+                          </button>
+                          <button mat-icon-button (click)="btnEliminar(row)">
+                            <mat-icon>delete</mat-icon>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 
 <div class="card">
   <div class="p-2">
     <div class="border-bottom pb-2">
       <div class="d-flex justify-content-end">
-        <!-- Botón para buscar sede -->
+
         <button [routerLink]="['']" class="btn btn-secondary">
           Buscar Sede
         </button>
@@ -11,18 +126,18 @@
     </div>
   </div>
   
-  <!-- Componente de Tabs -->
+
   <div class="nav-tab">
     <mat-tab-group animationDuration="0ms" (selectedTabChange)="onTabChange($event)">
       <div class="m-2">
-        <!-- Tab de Año y Sede -->
+        
         <mat-tab label="Periodo Actual - {{ periDescrActual }}">
           <ng-template matTabContent>
-            <!-- Contenido dinámico para esta tab -->
+           
           </ng-template>
         </mat-tab>
   
-        <!-- Tab de Otros Periodos -->
+
         <mat-tab label="Otros Periodos">
           <ng-template matTabContent>
             <mat-form-field >
@@ -39,7 +154,7 @@
     </mat-tab-group>
   </div>
   
-  <!-- Tabla con los datos filtrados -->
+
 
   <mat-form-field  style="padding: 10px;">
     <mat-label>Filtrar</mat-label>
@@ -48,37 +163,37 @@
   
   <div class="mat-elevation-z8 p-5">
     <table mat-table [dataSource]="dataSource" matSort  class="table">
-      <!-- Columna HORA_CCOD -->
+  
       <ng-container matColumnDef="Hora_Ccod">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription = "Ordenar por Código">Hora Código</th>
         <td mat-cell *matCellDef="let row">{{ row.hora_ccod }}</td>
       </ng-container>
   
-      <!-- Columna HORA_HINICIO -->
+
       <ng-container matColumnDef="Hora_Hinicio">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription = "Ordenar por Hora Inicio">Hora Inicio</th>
         <td mat-cell *matCellDef="let row">{{ row.hora_hinicio }}</td>
       </ng-container>
   
-      <!-- Columna HORA_HTERMINO -->
+
       <ng-container matColumnDef="Hora_Htermino">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription = "Ordenar por Hora Término">Hora Término</th>
         <td mat-cell *matCellDef="let row">{{ row.hora_htermino }}</td>
       </ng-container>
   
-      <!-- Columna TURN_TDESC -->
+
       <ng-container matColumnDef="Turn_Tdesc" >
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription = "Ordenar por Turno">Turno</th>
         <td mat-cell *matCellDef="let row">{{ row.turn_tdesc }}</td>
       </ng-container>
   
-      <!-- Columna AUDI_TUSUARIO -->
+ 
       <ng-container matColumnDef="Audi_Tusuario">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription = "Ordenar por Usuario">Última Modificación</th>
         <td mat-cell *matCellDef="let row">{{ row.audi_tusuario }}</td>
       </ng-container>
   
-      <!-- Columna Acción -->
+
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef >Acción</th>
         <td mat-cell *matCellDef="let row; let i = $index">
@@ -94,4 +209,5 @@
     <mat-paginator [pageSize]="5" [length]="dataSource.data.length" [pageSizeOptions]="[20, 50, 100]" aria-label="Seleccionar Página"></mat-paginator>
   </div>
   
-</div>
+</div> 
+-->

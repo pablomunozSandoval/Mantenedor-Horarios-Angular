@@ -1,40 +1,67 @@
+<div id="buscar" class="card" style="display: block">
+  <form [formGroup]="buscarForm" (ngSubmit)="onClickBtn()" novalidate>
+    <div class="row" style="width: 100%">
+      <div class="card-header" style="width: 100%">
+        <h4 class="float-left" style="font-size: 125%; font-family: Fjalla; margin-left: 15px">
+          Buscar
+        </h4>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row justify-content-between mb-4">
+        <div class="col-12 col-md-6">
+          <div class="md-form">
+            <mat-form-field appearance="fill" style="width: 100%">
+              <mat-select formControlName="sede" placeholder="Sede" required>
+                <mat-option *ngFor="let sede of lstSede" [value]="sede.codigo">{{ sede.descripcion }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="row mt-2">
+        <div class="col-12 mb-4 d-flex align-items-center justify-content-end">
+          <button id="btnBuscar" type="submit" class="btn btn-default ml-0 waves-effect waves-light">
+            <span>Buscar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<!--
 <section>
-
   <div class="card" id="buscar">
-
-
     <div class="card-header">
       <h4 class="float-left heading h4-responsive mb-0">Buscar</h4>
     </div>
-
-
     <div class="card-body">
       <div class="row local-selects">
-
         <div class="col-12 col-md-4">
-
-
           <div class="md-form">
-            
-                  <mat-form-field class="w-100 custom-outline" disabled="disabled">
-                    <mat-label >Sede</mat-label>
-                    <mat-select [(ngModel)]="selected">
-                      <mat-option *ngFor="let sede of lstSede" [value]="sede.codigo">
-                        {{ sede.descripcion }}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-            
+            <mat-form-field class="w-100 custom-outline" disabled="disabled">
+              <mat-label>Sede</mat-label>
+              <mat-select [(ngModel)]="selected">
+                <mat-option *ngFor="let sede of lstSede" [value]="sede.codigo">
+                  {{ sede.descripcion }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
           </div>
         </div>
 
-
-
         <div class="col-12 d-flex justify-content-end">
-
           <div class="md-form">
-            <button id="btnBuscar" [disabled]="!selected" class="btn btn-default waves-effect waves-light"
-              (click)="onClickBtn()">
+            <button
+              id="btnBuscar"
+              [disabled]="!selected"
+              class="btn btn-default waves-effect waves-light"
+              (click)="onClickBtn()"
+            >
               <span>Buscar</span>
             </button>
           </div>
@@ -42,3 +69,5 @@
       </div>
     </div>
   </div>
+</section>
+-->
